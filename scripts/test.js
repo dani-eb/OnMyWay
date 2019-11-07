@@ -14,7 +14,6 @@ module.exports = {
         } else if (xml.nodeType == 3) {
             obj = xml.nodeValue;
         }
-
         if (xml.hasChildNodes()) {
             for(var i = 0; i < xml.childNodes.length; i++) {
                 var item = xml.childNodes.item(i);
