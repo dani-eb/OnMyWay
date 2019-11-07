@@ -1,0 +1,10 @@
+html
+    head
+        title=title
+        meta(name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no')
+        script(src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js')
+        script(src='../scripts/mapApi.js')
+        link(href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet')
+    body
+        h1=pageTitle
+        div(id="map")=map

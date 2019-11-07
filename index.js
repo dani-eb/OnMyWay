@@ -3,7 +3,6 @@ const fs = require('fs');
 
 var parseString = require('xml2js').parseString;
 
-
 const xml = `<?xml version="1.0" encoding="utf-8"?>
 <Siri version="1.3" xmlns="http://www.siri.org.uk/siri">
     <ResponseTimestamp>2019-11-06T18:59:10.8846936-07:00</ResponseTimestamp>
