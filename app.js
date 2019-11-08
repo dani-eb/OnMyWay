@@ -11,9 +11,5 @@ app.listen(port, function () {
 });
 
 app.get("/map", function(req, res){
-    var model = {
-        title: "Map",
-        pageTitle: "Map"
-    };
-    res.render("mapView", model);
+    res.sendFile( __dirname + '/views/map.html');
 });
