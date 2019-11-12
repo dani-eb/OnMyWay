@@ -48,7 +48,9 @@
                 zoom: 18 // starting zoom
             });
             map.on('load', function () {
-                map.loadImage('https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png', function(error, image) {
+                map.loadImage('https://png2.cleanpng.com/sh/4daca8c1749122fbaa007b47ccd90c54/L0KzQYm3U8I5N5loj5H0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfNtcaEyeeR9LXzyc7L7if9vNZpoh9C2NXHlcrW9UfY1QGI1SKs3NUS4RoGAVscyPWM3SqcENEi6Qoq8Ur5xdpg=/kisspng-computer-icons-clip-art-location-icon-5abbd61f481009.5456076715222594872952.png', function(error, image) {
+                    console.log(error);
+                    console.log(image);
                     if (error) throw error;
                     map.addImage('icon', image);
                     map.addLayer({
