@@ -49,7 +49,9 @@
             });
             map.on('load', function () {
                 map.loadImage('https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Map_pin_icon_green.svg/800px-Map_pin_icon_green.svg.png', function(error, image) {
-                    if (error) throw error;
+                    console.log(error);
+                    console.log(image);
+                 if (error) throw error;
                     map.addImage('icon', image);
                     map.addLayer({
                         "id": "points",
