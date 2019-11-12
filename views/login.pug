@@ -1,0 +1,19 @@
+html
+    head
+        title="Login"
+        link()
+    body
+        div()
+            label()=error
+        form(method="post" id="loginForm" action=formAction)
+            div()
+                label()="Email"
+                input(type="text" name="email" value=email)
+            div()
+                label()="Password"
+                input(type="text" name="password")
+            if isSignUp
+                div()
+                    label()="Name"
+                    input(type="text" name="name" value=email)
+            button(class="button" type="submit" value=submitAction)=submitAction
