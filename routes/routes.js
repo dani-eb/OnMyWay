@@ -1,7 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
-const connectionString = "mongodb+srv://root:G5zjCZoIRqcmmQPL@cluster0-wfhqi.mongodb.net/test";
+const connectionString = "mongodb+srv://root:G5zjCZoIRqcmmQPL@cluster0-wfhqi.mongodb.net/users";
 
 mongoose.connect(connectionString,{
     useNewUrlParser: true,
@@ -10,111 +12,163 @@ mongoose.connect(connectionString,{
 
 const Schema = mongoose.Schema;
 
+const UserSchema = new Schema({
+    id: Number,
+    name: String,
+    email: String,
+    password: String,
+    milePerGallon: Number,
+    currentLocation: String,
+    destination: String
+})
+
 const User = mongoose.model("User", UserSchema);
 
 const router = express.Router();
 
+router.route("/").get(
+    function(req, res){
+        res.render("index");
+    }
+)
+
 router.route("/signUp").get(
     function(req, res){
-        let model = {
-            isSignUp: true,
-            formAction: "signUp",
-            submitAction: "Sign Up"
-        }
+        console.log("Sign Up - Get");
         
-        res.render("login", model);
+        res.render("signUp");
     }
 )
     
 router.route("/signUp").post(
     function(req, res){
-        if(req.body.email && req.body.password && req.body.submit){
+        console.log("Sign Up - Post");
+        if(req.body.email && req.body.password && req.body.name){
+            console.log("Sign Up - Post: Inside if statement");
             User.find({}, function(err, user){
-                let newUser = new User({id: length,
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: req.body.password,
-                    milePerGallon: null,
-                    currentLocation: null,
-                    destination: null});
-                newUser.save();
-                //TODO
-                res.redirect("Change it!!");
+                if(user){
+                    bcrypt.genSalt(saltRounds, function(err, salt){
+                        bcrypt.hash(req.body.password, salt, function(err, hash){
+                            let newUser = new User({id: user.length,
+                                name: req.body.name,
+                                email: req.body.email,
+                                password: hash,
+                                milePerGallon: null,
+                                currentLocation: null,
+                                destination: null});
+                            newUser.save();
+    
+                            res.redirect("/");
+
+                        })
+                    });
+                }
+
+
             });
         } else {
             let model = {
                 isSignUp: false,
-                formAction: "logIn",
-                submitAction: "Login",
                 name: req.body.name,
                 email: req.body.email,
                 error: "Please fill all forms"
             }
 
-            res.redirect("signUp", model);
+            res.render("signUp", model);
         }
         
     }
 )
 
-router.route("/logIn").get(
+router.route("/login").get(
     function(req, res){
-        let model = {
-            isSignUp: false,
-            formAction: "logIn",
-            submitAction: "Login"
-        }
-        
-        res.render("login", model);
+        console.log("Login - Get");
+
+        res.render("login");
     }
 )
 
-router.route("/logIn").post(
+router.route("/login").post(
     function(req, res){
+        console.log("Login - Post");
         if(req.body.email && req.body.password){
             User.find({email: req.body.email}, function(err, user){
                 if(err){
                     let model = {
-                        isSignUp: false,
-                        formAction: "logIn",
-                        submitAction: "Login",
-                        error: "Email is not sign in to the database"
+                        error: "Email does not exist in database"
                     }
 
-                    res.redirect("logIn", model);
+                    res.render("login", model);
                 }
 
-                if(user.password == req.password){
-
-                } else {
-                    let model = {
-                        isSignUp: false,
-                        formAction: "logIn",
-                        submitAction: "Login",
-                        email: req.body.email,
-                        error: "Please fill all forms"
+                bcrypt.compare(req.body.password, user[0].password, function(err, hash){
+                    if(err){
+                        console.log(err);
                     }
+                    if(hash){
+                        res.redirect("/");
+                    } else {
+                        let model = {
+                            email: req.body.email,
+                            error: "Password or email was incorrect"
+                        }
+    
+                        res.render("login", model);
+                    }
+                });
 
-                    res.redirect("logIn", model);
-                }
+
+                // checkUser(req.body.password, user.password, res);
+
+                // const match = bcrypt.compare(req.body.password, user.password);
+                
+                // if(match){
+                //     console.log("Yes?")
+                // } else {
+                //     console.log("No?");
+                // }
+                // if(user.password == req.body.password){
+                //     console.log("password was correct");
+                //     res.redirect("/");
+                // } else {
+                    // let model = {
+                    //     email: req.body.email,
+                    //     error: "Password or email was incorrect"
+                    // }
+
+                    // res.render("login", model);
+                // }
 
             });
         } else {
             let model = {
                 isSignUp: false,
-                formAction: "logIn",
-                submitAction: "Login",
                 email: req.body.email,
                 error: "Please fill all forms"
             }
 
-            res.redirect("logIn", model);
+            res.render("login", model);
         }
 
     }
 )
 
-module.exports = route;
+async function checkUser(password, hash, res){
+    const match = await bcrypt.compare(password, hash);
+
+    if(match){
+       res.redirect("/");
+    } else {
+        let model = {
+            email: req.body.email,
+            error: "Password or email was incorrect"
+        }
+
+        res.render("login", model);
+    }
+}
+
+module.exports = router;
 
 // For the main page
 // const express = require("express");
