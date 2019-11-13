@@ -10,6 +10,9 @@ app.listen(port, function () {
     console.log("Express started listening on port: " + port);
 });
 
+var routes = require("./routes/routes");
+app.use("/", routes);
+
 app.get("/map", function(req, res){
     res.sendFile( __dirname + '/views/map.html');
 });

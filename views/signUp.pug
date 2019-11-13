@@ -1,15 +1,18 @@
 html
     head
-        title="Login"
+        title="Sign Up"
         link()
     body
-        div()="Login"
+        div()="Sign Up"
             label()=error
-        form(method="post" id="loginForm" action="logIn")
+        form(method="post" id="loginForm" action="signUp")
+            div()
+                label()="Name"
+                input(type="text" name="name" value=name)
             div()
                 label()="Email"
                 input(type="text" name="email" value=email)
             div()
                 label()="Password"
                 input(type="password" name="password")
-            button(class="button" type="submit")="Log In"
+            button(class="button" type="submit")="Sign Up"
