@@ -2,83 +2,93 @@
 <html>
 
 <head>
-    <meta charset='utf-8' />
-    <title>Display a map</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+    <title>Maps SDK for Web - my location</title>
 </head>
 
 <body>
+    <div id='map' class='map'>
+        <div class='tt-overlay-panel -center js-message-box' hidden>
+            <button class='tt-overlay-panel__close js-message-box-close'></button>
+            <span class='tt-overlay-panel__content'></span>
+        </div>
+    </div>
 
-    <div id='map'></div>
+
+
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps-web.min.js"></script>
+
     <script>
-        var long;
-        var lat;
-        getLocation();
+        // Define your product name and version
+        tt.setProductInfo('OMW', 'v1');
 
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
+        var mapElement = document.getElementById('map');
+        var messageBox = document.querySelector('.js-message-box');
+        var messageBoxContent = document.querySelector('.tt-overlay-panel__content');
+        var messageBoxClose = messageBox.querySelector('.js-message-box-close');
+
+        var messages = {
+            permissionDenied: 'Permission denied. You can change your browser settings to allow usage of geolocation on this domain.',
+            notAvailable: 'Geolocation data provider not available.'
+        };
+
+        // Create map
+        var map = tt.map({
+            key: 'VQOVbt49nO29ANmuQgvS73U6tOUGecoG',
+            container: 'map',
+            style: 'tomtom://vector/1/basic-main'
+        });
+        map.addControl(new tt.FullscreenControl());
+
+        // Create plugin instance
+        var geolocateControl = new tt.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: false
+            }
+        });
+
+        bindEvents();
+
+        // Handle case when domain permissions are already blocked
+        handlePermissionDenied();
+
+        map.addControl(geolocateControl);
+
+        function handlePermissionDenied() {
+            if ('permissions' in navigator) {
+                navigator.permissions.query({ name: 'geolocation' })
+                    .then(function (result) {
+                        if (result.state === 'denied') {
+                            displayErrorMessage(messages.permissionDenied);
+                        }
+                    });
             }
         }
 
-        function showPosition(position) {
-            mapboxgl.accessToken = 'pk.eyJ1IjoibnZlZ2EiLCJhIjoiY2sycDl5eDh1MDI0MTNsbnk2dHpqa3g5MCJ9.woy5_Z5-9yJbFLqj0SJJmA';
-            long = position.coords.longitude;
-            lat = position.coords.latitude;
-
-            var map = new mapboxgl.Map({
-                container: 'map', // container id
-                style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-                center: [long, lat], // starting position [lng, lat]
-                zoom: 18 // starting zoom
-            });
-            map.on('load', function () {
-                map.loadImage('https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png', function(error, image) {
-                    if (error) throw error;
-                    map.addImage('icon', image);
-                    map.addLayer({
-                        "id": "points",
-                        "type": "symbol",
-                        "source": {
-                            "type": "geojson",
-                            "data": {
-                                "type": "FeatureCollection",
-                                "features": [{
-                                    "type": "Feature",
-                                    "geometry": {
-                                        "type": "Point",
-                                        "coordinates": [long, lat]
-                                    }
-                                }]
-                            }
-                        },
-                        "layout": {
-                            "icon-image": "icon",
-                            "icon-size": 0.25
-                        }
-                    });
-                });
-            });
+        function bindEvents() {
+            geolocateControl.on('error', handleError);
+            messageBoxClose.addEventListener('click', handleMessageBoxClose);
         }
 
+        function handleMessageBoxClose() {
+            messageBox.setAttribute('hidden', true);
+        }
 
+        function displayErrorMessage(message) {
+            messageBoxContent.textContent = message;
+            messageBox.removeAttribute('hidden');
+        }
+
+        function handleError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    displayErrorMessage(messages.permissionDenied);
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                case error.TIMEOUT:
+                    displayErrorMessage(messages.notAvailable);
+            }
+        }
     </script>
-
 </body>
 
 </html>

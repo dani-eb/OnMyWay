@@ -1,0 +1,18 @@
+html
+    head
+        title="Sign Up"
+        link()
+    body
+        div()="Sign Up"
+            label()=error
+        form(method="post" id="loginForm" action="signUp")
+            div()
+                label()="Name"
+                input(type="text" name="name" value=name)
+            div()
+                label()="Email"
+                input(type="text" name="email" value=email)
+            div()
+                label()="Password"
+                input(type="password" name="password")
+            button(class="button" type="submit")="Sign Up"

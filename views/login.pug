@@ -1,0 +1,15 @@
+html
+    head
+        title="Login"
+        link()
+    body
+        div()="Login"
+            label()=error
+        form(method="post" id="loginForm" action="logIn")
+            div()
+                label()="Email"
+                input(type="text" name="email" value=email)
+            div()
+                label()="Password"
+                input(type="password" name="password")
+            button(class="button" type="submit")="Log In"
