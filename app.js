@@ -17,3 +17,7 @@ app.use(express.static(__dirname + "/mapPublic"));
 app.get("/map", function(req, res) {
     res.sendFile(__dirname + '/views/map.html');
 });
+
+app.get("/", function(req, res) {
+    res.render("index");
+});
