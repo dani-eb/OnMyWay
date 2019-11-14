@@ -1,93 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html class='use-all-space'>
 
 <head>
-    <title>Maps SDK for Web - my location</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta charset='UTF-8'>
+    <title>Maps SDK for Web - Routing from my location</title>
+    <meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link rel='stylesheet' type='text/css' href='/map.css' />
+    <link rel='stylesheet' type='text/css' href='/elements.css' />
+    <script type='text/javascript' src='/form.js'></script>
+    <script type='text/javascript' src='/tomtom.min.js'></script>
+    <style>
+        label {
+            display: flex;
+            align-items: center;
+            margin: 2px;
+        }
+        
+        select {
+            flex: auto;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 
-<body>
-    <div id='map' class='map'>
-        <div class='tt-overlay-panel -center js-message-box' hidden>
-            <button class='tt-overlay-panel__close js-message-box-close'></button>
-            <span class='tt-overlay-panel__content'></span>
-        </div>
-    </div>
-
-
-
-    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps-web.min.js"></script>
-
+<body class='use-all-space'>
+    <div id='map' class='use-all-space'></div>
     <script>
         // Define your product name and version
-        tt.setProductInfo('OMW', 'v1');
+        tomtom.setProductInfo('OMW', 'v1');
+        // Setting TomTom keys
+        tomtom.routingKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
+        tomtom.searchKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
 
-        var mapElement = document.getElementById('map');
-        var messageBox = document.querySelector('.js-message-box');
-        var messageBoxContent = document.querySelector('.tt-overlay-panel__content');
-        var messageBoxClose = messageBox.querySelector('.js-message-box-close');
-
-        var messages = {
-            permissionDenied: 'Permission denied. You can change your browser settings to allow usage of geolocation on this domain.',
-            notAvailable: 'Geolocation data provider not available.'
-        };
-
-        // Create map
-        var map = tt.map({
+        // Creating map
+        var map = tomtom.L.map('map', {
             key: 'VQOVbt49nO29ANmuQgvS73U6tOUGecoG',
-            container: 'map',
-            style: 'tomtom://vector/1/basic-main'
+            source: 'vector',
+            basePath: '/sdk'
         });
-        map.addControl(new tt.FullscreenControl());
+        map.zoomControl.setPosition('topright');
 
-        // Create plugin instance
-        var geolocateControl = new tt.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: false
-            }
+        var unitSelector = tomtom.unitSelector.getHtmlElement(tomtom.globalUnitService);
+        var languageSelector = tomtom.languageSelector.getHtmlElement(tomtom.globalLocaleService, 'search');
+
+        var unitRow = document.createElement('div');
+        var unitLabel = document.createElement('label');
+        unitLabel.innerHTML = 'Unit of measurement';
+        unitLabel.appendChild(unitSelector);
+        unitRow.appendChild(unitLabel);
+        unitRow.className = 'input-container';
+
+        var langRow = document.createElement('div');
+        var langLabel = document.createElement('label');
+        langLabel.innerHTML = 'Search language';
+        langLabel.appendChild(languageSelector);
+        langRow.appendChild(langLabel);
+        langRow.className = 'input-container';
+
+        tomtom.controlPanel({
+                position: 'bottomright',
+                title: 'Settings',
+                collapsed: true
+            })
+            .addTo(map)
+            .addContent(unitRow)
+            .addContent(langRow);
+
+        // Adding the route inputs fields widget
+        var routeInputs = tomtom.routeInputs().addTo(map);
+        // Adding the route widget
+        var routeOnMapView = tomtom.routeOnMap().addTo(map);
+
+        // Connecting the routeInputs widget with the routeOnMap widget
+        routeInputs.on(routeInputs.Events.LocationsFound, function(eventObject) {
+            routeOnMapView.draw(eventObject.points);
+        });
+        routeInputs.on(routeInputs.Events.LocationsCleared, function(eventObject) {
+            routeOnMapView.draw(eventObject.points);
         });
 
-        bindEvents();
-
-        // Handle case when domain permissions are already blocked
-        handlePermissionDenied();
-
-        map.addControl(geolocateControl);
-
-        function handlePermissionDenied() {
-            if ('permissions' in navigator) {
-                navigator.permissions.query({ name: 'geolocation' })
-                    .then(function (result) {
-                        if (result.state === 'denied') {
-                            displayErrorMessage(messages.permissionDenied);
-                        }
-                    });
-            }
-        }
-
-        function bindEvents() {
-            geolocateControl.on('error', handleError);
-            messageBoxClose.addEventListener('click', handleMessageBoxClose);
-        }
-
-        function handleMessageBoxClose() {
-            messageBox.setAttribute('hidden', true);
-        }
-
-        function displayErrorMessage(message) {
-            messageBoxContent.textContent = message;
-            messageBox.removeAttribute('hidden');
-        }
-
-        function handleError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    displayErrorMessage(messages.permissionDenied);
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                case error.TIMEOUT:
-                    displayErrorMessage(messages.notAvailable);
-            }
-        }
+        // Show error in widget when location cannot be autodetected
+        routeInputs.on(routeInputs.Events.LocationError, function() {
+            routeInputs.showLocationNotFoundMessageBox();
+        });
     </script>
 </body>
 
