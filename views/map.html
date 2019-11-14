@@ -2,10 +2,7 @@
 <html class='use-all-space'>
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta charset='UTF-8'>
-    <title>Maps SDK for Web - Basic routing A-B</title>
-    <meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <title>Map</title>
     <link rel='stylesheet' type='text/css' href='sdk/map.css' />
     <link rel='stylesheet' type='text/css' href='elements.css' />
     <script type='text/javascript' src='form.js'></script>
@@ -29,6 +26,7 @@
     <script>
         // Define your product name and version
         tomtom.setProductInfo('OMW', 'V1');
+
         // Setting TomTomkeys
         tomtom.routingKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
         tomtom.searchKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
@@ -39,38 +37,17 @@
             source: 'vector',
             basePath: '/sdk'
         });
+
+        //Zoom in and out with buttons on the top right
         map.zoomControl.setPosition('topright');
-        var unitSelector = tomtom.unitSelector.getHtmlElement(tomtom.globalUnitService);
-        var languageSelector = tomtom.languageSelector.getHtmlElement(tomtom.globalLocaleService, 'search');
-
-        var unitRow = document.createElement('div');
-        var unitLabel = document.createElement('label');
-        unitLabel.innerHTML = 'Unit of measurement';
-        unitLabel.appendChild(unitSelector);
-        unitRow.appendChild(unitLabel);
-        unitRow.className = 'input-container';
-
-        var langRow = document.createElement('div');
-        var langLabel = document.createElement('label');
-        langLabel.innerHTML = 'Search language';
-        langLabel.appendChild(languageSelector);
-        langRow.appendChild(langLabel);
-        langRow.className = 'input-container';
-
-        tomtom.controlPanel({
-                position: 'bottomright',
-                title: 'Settings',
-                collapsed: true
-            })
-            .addTo(map)
-            .addContent(unitRow)
-            .addContent(langRow);
 
         // Creating routeOnMap widget
         var routeOnMapView = tomtom.routeOnMap({
+            //make the icons movable
             generalMarker: {
                 draggable: true
             },
+            //make start icon
             startMarker: {
                 icon: tomtom.L.icon({
                     iconUrl: 'sdk/images/start-black.png',
@@ -78,6 +55,7 @@
                     iconAnchor: [15, 15]
                 })
             },
+            //make end icon
             endMarker: {
                 icon: tomtom.L.icon({
                     iconUrl: 'sdk/images/end-black.png',
@@ -87,6 +65,7 @@
             }
         }).addTo(map);
 
+        //create a searchBox for start location
         var startLocation = tomtom.searchBox({
             collapsible: false,
             icon: 'icon-start-black',
@@ -94,6 +73,7 @@
             location: true
         }).addTo(map);
 
+        //create a searchBox for end location
         var endLocation = tomtom.searchBox({
             collapsible: false,
             icon: 'icon-end-black',
@@ -126,8 +106,6 @@
         startLocation.on(startLocation.Events.ResultClicked, function(event) {
             updateRouteStart(event.data.position);
         });
-
-
 
         endLocation.on(endLocation.Events.ResultClicked, function(event) {
             updateRouteEnd(event.data.position);
