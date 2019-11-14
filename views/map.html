@@ -41,6 +41,11 @@
         });
         map.zoomControl.setPosition('topright');
 
+        map.on('click', function(e) {
+            var yikes = e.latlng;
+            tomtom.L.popup().setLatLng(e.latlng).setContent(e.latlng.toString()).openOn(map);
+        });
+
         var unitSelector = tomtom.unitSelector.getHtmlElement(tomtom.globalUnitService);
         var languageSelector = tomtom.languageSelector.getHtmlElement(tomtom.globalLocaleService, 'search');
 
