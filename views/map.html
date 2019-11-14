@@ -4,12 +4,12 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta charset='UTF-8'>
-    <title>Maps SDK for Web - Routing from my location</title>
+    <title>Maps SDK for Web - Basic routing A-B</title>
     <meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <link rel='stylesheet' type='text/css' href='/map.css' />
-    <link rel='stylesheet' type='text/css' href='/elements.css' />
-    <script type='text/javascript' src='/form.js'></script>
-    <script type='text/javascript' src='/tomtom.min.js'></script>
+    <link rel='stylesheet' type='text/css' href='sdk/map.css' />
+    <link rel='stylesheet' type='text/css' href='elements.css' />
+    <script type='text/javascript' src='form.js'></script>
+    <script type='text/javascript' src='sdk/tomtom.min.js'></script>
     <style>
         label {
             display: flex;
@@ -24,38 +24,22 @@
     </style>
 </head>
 
-<body style='margin:0px;'>
-    <div id='map' class='map' style='height:100vh;min-height:100%;'>
-        <div class='tt-overlay-panel -center js-message-box' hidden>
-            <button class='tt-overlay-panel__close js-message-box-close'></button>
-            <span class='tt-overlay-panel__content'></span>
-        </div>
-    </div>
-
-
-
-    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps-web.min.js"></script>
-
+<body class='use-all-space'>
+    <div id='map' class='use-all-space'></div>
     <script>
         // Define your product name and version
-        tomtom.setProductInfo('OMW', 'v1');
-        // Setting TomTom keys
+        tomtom.setProductInfo('OMW', 'V1');
+        // Setting TomTomkeys
         tomtom.routingKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
         tomtom.searchKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
 
-        // Creating map
+        // Creating the map
         var map = tomtom.L.map('map', {
             key: 'VQOVbt49nO29ANmuQgvS73U6tOUGecoG',
             source: 'vector',
             basePath: '/sdk'
         });
         map.zoomControl.setPosition('topright');
-
-        map.on('click', function(e) {
-            var yikes = e.latlng;
-            tomtom.L.popup().setLatLng(e.latlng).setContent(e.latlng.toString()).openOn(map);
-        });
-
         var unitSelector = tomtom.unitSelector.getHtmlElement(tomtom.globalUnitService);
         var languageSelector = tomtom.languageSelector.getHtmlElement(tomtom.globalLocaleService, 'search');
 
@@ -82,22 +66,79 @@
             .addContent(unitRow)
             .addContent(langRow);
 
-        // Adding the route inputs fields widget
-        var routeInputs = tomtom.routeInputs().addTo(map);
-        // Adding the route widget
-        var routeOnMapView = tomtom.routeOnMap().addTo(map);
+        // Creating routeOnMap widget
+        var routeOnMapView = tomtom.routeOnMap({
+            generalMarker: {
+                draggable: true
+            },
+            startMarker: {
+                icon: tomtom.L.icon({
+                    iconUrl: 'sdk/images/start-black.png',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
+            },
+            endMarker: {
+                icon: tomtom.L.icon({
+                    iconUrl: 'sdk/images/end-black.png',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
+            }
+        }).addTo(map);
 
-        // Connecting the routeInputs widget with the routeOnMap widget
-        routeInputs.on(routeInputs.Events.LocationsFound, function(eventObject) {
-            routeOnMapView.draw(eventObject.points);
-        });
-        routeInputs.on(routeInputs.Events.LocationsCleared, function(eventObject) {
-            routeOnMapView.draw(eventObject.points);
+        var startLocation = tomtom.searchBox({
+            collapsible: false,
+            icon: 'icon-start-black',
+            searchOnDragEnd: 'open',
+            location: true
+        }).addTo(map);
+
+        var endLocation = tomtom.searchBox({
+            collapsible: false,
+            icon: 'icon-end-black',
+            searchOnDragEnd: 'open'
+        }).addTo(map);
+
+        // Update the searchbox widget content when the markers are dragged
+        routeOnMapView.on(routeOnMapView.Events.MarkerDragEnd, function(result) {
+            var searchBox = result.markerIndex === 0 ? startLocation : endLocation;
+            searchBox.setResultData(result.object);
         });
 
-        // Show error in widget when location cannot be autodetected
-        routeInputs.on(routeInputs.Events.LocationError, function() {
-            routeInputs.showLocationNotFoundMessageBox();
+        // The next lines update the route when the user change the start and end route points using the searchbox widget
+        var locationsList = [];
+
+        function updateRoute() {
+            routeOnMapView.draw(locationsList);
+        }
+
+        function updateRouteStart(pos) {
+            locationsList[0] = pos;
+            updateRoute();
+        }
+
+        function updateRouteEnd(pos) {
+            locationsList[1] = pos;
+            updateRoute();
+        }
+
+        startLocation.on(startLocation.Events.ResultClicked, function(event) {
+            updateRouteStart(event.data.position);
+        });
+
+
+
+        endLocation.on(endLocation.Events.ResultClicked, function(event) {
+            updateRouteEnd(event.data.position);
+        });
+
+        startLocation.on(startLocation.Events.ClearButtonClicked, function() {
+            updateRouteStart();
+        });
+
+        endLocation.on(endLocation.Events.ClearButtonClicked, function() {
+            updateRouteEnd();
         });
     </script>
 </body>
