@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@tomtom-international/web-sdk-maps": "^5.39.0",
+    "@tomtom-international/web-sdk-plugin-searchbox": "^1.0.6",
+    "@tomtom-international/web-sdk-plugin-zoomcontrols": "^1.0.8",
     "@tomtom-international/web-sdk-services": "^5.39.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",

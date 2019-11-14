@@ -5,13 +5,19 @@ var port = 3001;
 app.use(express.urlencoded());
 app.set("view engine", "pug");
 app.use(express.static(__dirname + "/public"));
-app.listen(port, function () {
+app.listen(port, function() {
     console.log("Express started listening on port: " + port);
 });
 
 var routes = require("./routes/routes");
 app.use("/", routes);
+app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/mapPublic"));
 
-app.get("/map", function(req, res){
-    res.sendFile( __dirname + '/views/map.html');
+app.get("/map", function(req, res) {
+    res.sendFile(__dirname + '/views/map.html');
+});
+
+app.get("/", function(req, res) {
+    res.render("index");
 });
