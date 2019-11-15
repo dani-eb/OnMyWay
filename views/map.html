@@ -7,18 +7,6 @@
     <link rel='stylesheet' type='text/css' href='elements.css' />
     <script type='text/javascript' src='form.js'></script>
     <script type='text/javascript' src='sdk/tomtom.min.js'></script>
-    <style>
-        label {
-            display: flex;
-            align-items: center;
-            margin: 2px;
-        }
-        
-        select {
-            flex: auto;
-            margin-left: 10px;
-        }
-    </style>
 </head>
 
 <body class='use-all-space'>
@@ -80,27 +68,25 @@
             searchOnDragEnd: 'open'
         }).addTo(map);
 
+        // locationList stores the start and end position
+        var locationsList = [];
+
         // Update the searchbox widget content when the markers are dragged
         routeOnMapView.on(routeOnMapView.Events.MarkerDragEnd, function(result) {
+            //if the index is 0, it is the start, else it is the end
             var searchBox = result.markerIndex === 0 ? startLocation : endLocation;
+            //the searchBox data becomes the result
             searchBox.setResultData(result.object);
         });
 
-        // The next lines update the route when the user change the start and end route points using the searchbox widget
-        var locationsList = [];
-
-        function updateRoute() {
-            routeOnMapView.draw(locationsList);
-        }
-
         function updateRouteStart(pos) {
             locationsList[0] = pos;
-            updateRoute();
+            routeOnMapView.draw(locationsList);
         }
 
         function updateRouteEnd(pos) {
             locationsList[1] = pos;
-            updateRoute();
+            routeOnMapView.draw(locationsList);
         }
 
         startLocation.on(startLocation.Events.ResultClicked, function(event) {
