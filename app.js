@@ -1,10 +1,16 @@
 const express = require("express");
+const express_session = require('express-session');
 const app = express();
 var port = 3001;
 
 app.use(express.urlencoded());
 app.set("view engine", "pug");
 app.use(express.static(__dirname + "/public"));
+app.use(express_session({
+    secret: "secret",
+    saveUninitialized: true,
+    resave: true
+}));
 app.listen(port, function() {
     console.log("Express started listening on port: " + port);
 });

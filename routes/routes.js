@@ -25,6 +25,10 @@ router.route("/signUp").post(
             console.log("Sign Up - Post: Inside if statement");
             mongo_controller.makeUser(req.body.name, req.body.email, req.body.password, (success) => {
                 if (success) {
+                    req.session.user = {
+                        isAuthenticated:true,
+                        username: req.body.email
+                    }
                     res.redirect("/");
                 } else {
                     let model = {
@@ -33,7 +37,7 @@ router.route("/signUp").post(
                         email: req.body.email,
                         error: "Please fill all forms"
                     }
-        
+
                     res.render("signUp", model);
                 }
             });
@@ -63,6 +67,10 @@ router.route("/login").post( (req, res) => {
         if(req.body.email && req.body.password){
             mongo_controller.login(req.body.email, req.body.password, (success, model) => {
                 if (success) {
+                    req.session.user = {
+                        isAuthenticated:true,
+                        username: req.body.email
+                    }
                     res.redirect("/");
                 } else {
                     res.render("login", model);

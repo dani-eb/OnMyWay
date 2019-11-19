@@ -70,7 +70,7 @@ exports.login = (email, password, callback) => {
     this.User.find({email: email}, (err, user) => {
         if(err){
             let model = {
-                error: "Email does not exist in database"
+                error: "Email or password is wrong"
             }
             callback(false, model);
             return;
