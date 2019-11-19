@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const auto_increment = require('mongoose-auto-increment');
 const connectionString = "mongodb+srv://root:G5zjCZoIRqcmmQPL@cluster0-wfhqi.mongodb.net/users";
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const passwordController = require('../scripts/passwordController');
 
 mongoose.connect(connectionString,{
     useNewUrlParser: true,
@@ -26,70 +25,64 @@ UserSchema.plugin(auto_increment.plugin, "User");
 
 exports.User = mongoose.model("User", UserSchema);
 exports.makeUser = (name, email, password, callback) => {
-    let encounteredError = false;
     this.User.find({}, (err, user) => {
         if (err) {
             console.log(err);
-            encounteredError = true;
+            // success is false
+            return callback(false);
         }
         if (user) {
             console.log("2");
-            bcrypt.genSalt(saltRounds, (err, salt) => {
+            passwordController.generateHash(password, (err, hash) => {
                 if (err) {
                     console.log(err);
-                    encounteredError = true;
+                    // success is false
+                    return callback(false);
                 }
-                console.log("3");
-                bcrypt.hash(password, salt, (err, hash) => {
-                    if (err) {
-                        console.log(err);
-                        encounteredError = true;
-                    }
-                    console.log("4");
+                if (hash) {
                     let new_user = new this.User({
-                        name: name,
-                        email: email,
-                        password: hash,
+                        name:name,
+                        email:email,
+                        password:hash,
                         milePerGallon: null,
                         currentLocation: null,
-                        destination: null 
+                        destination: null
                     });
                     new_user.save();
-                    callback(true);
-                });
+                    // success is true
+                    return callback(true);
+                } else {
+                    console.log("no user has been generated, could not save user");
+                    // success is false
+                    return callback(false);
+                }
             });
         }
     });
-    if (encounteredError) {
-        callback(false);
-        return;
-    }
 };
 
 exports.login = (email, password, callback) => {
+    let incorrectModel = {
+        email: req.body.email,
+        error: "Password or email was incorrect"
+    }
     this.User.find({email: email}, (err, user) => {
         if(err){
-            let model = {
-                error: "Email or password is wrong"
-            }
-            callback(false, model);
+            return callback(false, incorrectModel);
             return;
         }
-
-        bcrypt.compare(password, user[0].password, (err, hash) => {
-            if(err){
+        passwordController.checkPassword(password, user[0].password, (err, success) => {
+            if (err) {
                 console.log(err);
+                // success is false
+                return callback(false);
             }
-            if(hash){
-                callback(true);
-                return;
+            if (success) {
+                // success is true
+                return callback(true);
             } else {
-                let model = {
-                    email: req.body.email,
-                    error: "Password or email was incorrect"
-                }
-                callback(false, model);
-                return;
+                // success is false
+                return callback(false, incorrectModel);
             }
         });
     });
