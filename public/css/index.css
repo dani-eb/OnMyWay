@@ -1,11 +1,14 @@
-.nav li{
-    padding: 10px;
-    border: 2px solid white;
-    
-}
-ul{
+.nav {
     list-style-type: none;
     display: flex;
     flex-wrap: wrap;
     align-content: center;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+.nav li{
+    padding: 10px 10px 10px 10px;
+    border: 2px solid white;
 }
