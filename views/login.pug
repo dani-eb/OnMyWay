@@ -3,13 +3,28 @@ html
         title="Login"
         link()
     body
-        div()="Login"
-            label()=error
-        form(method="post" id="loginForm" action="logIn")
-            div()
-                label()="Email"
-                input(type="text" name="email" value=email)
-            div()
-                label()="Password"
-                input(type="password" name="password")
-            button(class="button" type="submit")="Log In"
+        div(class="navigationBox")
+            ul(class="nav")
+                li
+                    a(href="/")="OWM"
+                li   
+                    a(href="/ridesNow")="Rides Now"
+                li
+                    a(href="/uta")="UTA"
+                li
+                    a(href="/personal")="Personal"
+                li
+                    a(href="/flights")="Flights"
+                li
+                    a(href="/weather")="Weather"
+        div(class="loginBox")
+            div()="Login"
+                label()=error
+            form(method="post" id="loginForm" action="logIn")
+                div()
+                    label()="Email"
+                    input(type="text" name="email" value=email)
+                div()
+                    label()="Password"
+                    input(type="password" name="password")
+                button(class="button" type="submit")="Log In"
