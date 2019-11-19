@@ -1,7 +1,8 @@
 html
     head
-        title="Login"
-        link()
+        title="Rides Now"
+        script(src="./app.js")
+        link(href="/css/rideNow.css", rel="stylesheet", type="text/css")
     body
         div(class="navigationBox")
             ul(class="nav")
@@ -9,7 +10,7 @@ html
                     h1 OnMyWay
                 li
                     a(href="/")="OWM"
-                li   
+                li
                     a(href="/ridesNow")="Rides Now"
                 li
                     a(href="/uta")="UTA"
@@ -19,14 +20,7 @@ html
                     a(href="/flights")="Flights"
                 li
                     a(href="/weather")="Weather"
-        div(class="loginBox")
-            div()="Login"
-                label()=error
-            form(method="post" id="loginForm" action="logIn")
-                div()
-                    label()="Email"
-                    input(type="text" name="email" value=email)
-                div()
-                    label()="Password"
-                    input(type="password" name="password")
-                button(class="button" type="submit")="Log In"
+        div(class="selectingWays")
+            a(class='uber') Uber
+            a(class='lime') Lime
+            a(class='bird') Bird
