@@ -1,93 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html class='use-all-space'>
 
 <head>
-    <title>Maps SDK for Web - my location</title>
+    <title>Map</title>
+    <link rel='stylesheet' type='text/css' href='sdk/map.css' />
+    <link rel='stylesheet' type='text/css' href='elements.css' />
+    <script type='text/javascript' src='form.js'></script>
+    <script type='text/javascript' src='sdk/tomtom.min.js'></script>
 </head>
 
-<body>
-    <div id='map' class='map'>
-        <div class='tt-overlay-panel -center js-message-box' hidden>
-            <button class='tt-overlay-panel__close js-message-box-close'></button>
-            <span class='tt-overlay-panel__content'></span>
-        </div>
-    </div>
-
-
-
-    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.39.0/maps/maps-web.min.js"></script>
-
+<body class='use-all-space'>
+    <div id='map' class='use-all-space'></div>
     <script>
         // Define your product name and version
-        tt.setProductInfo('OMW', 'v1');
+        tomtom.setProductInfo('OMW', 'V1');
 
-        var mapElement = document.getElementById('map');
-        var messageBox = document.querySelector('.js-message-box');
-        var messageBoxContent = document.querySelector('.tt-overlay-panel__content');
-        var messageBoxClose = messageBox.querySelector('.js-message-box-close');
+        // Setting TomTomkeys
+        tomtom.routingKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
+        tomtom.searchKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
 
-        var messages = {
-            permissionDenied: 'Permission denied. You can change your browser settings to allow usage of geolocation on this domain.',
-            notAvailable: 'Geolocation data provider not available.'
-        };
-
-        // Create map
-        var map = tt.map({
+        // Creating the map
+        var map = tomtom.L.map('map', {
             key: 'VQOVbt49nO29ANmuQgvS73U6tOUGecoG',
-            container: 'map',
-            style: 'tomtom://vector/1/basic-main'
-        });
-        map.addControl(new tt.FullscreenControl());
-
-        // Create plugin instance
-        var geolocateControl = new tt.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: false
-            }
+            source: 'vector',
+            basePath: '/sdk'
         });
 
-        bindEvents();
+        //Zoom in and out with buttons on the top right
+        map.zoomControl.setPosition('topright');
 
-        // Handle case when domain permissions are already blocked
-        handlePermissionDenied();
-
-        map.addControl(geolocateControl);
-
-        function handlePermissionDenied() {
-            if ('permissions' in navigator) {
-                navigator.permissions.query({ name: 'geolocation' })
-                    .then(function (result) {
-                        if (result.state === 'denied') {
-                            displayErrorMessage(messages.permissionDenied);
-                        }
-                    });
+        // Creating routeOnMap widget
+        var routeOnMapView = tomtom.routeOnMap({
+            //make the icons movable
+            generalMarker: {
+                draggable: true
+            },
+            //make start icon
+            startMarker: {
+                icon: tomtom.L.icon({
+                    iconUrl: 'sdk/images/start-black.png',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
+            },
+            //make end icon
+            endMarker: {
+                icon: tomtom.L.icon({
+                    iconUrl: 'sdk/images/end-black.png',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
             }
+        }).addTo(map);
+
+        //create a searchBox for start location
+        var startLocation = tomtom.searchBox({
+            collapsible: false,
+            icon: 'icon-start-black',
+            searchOnDragEnd: 'open',
+            location: true
+        }).addTo(map);
+
+        //create a searchBox for end location
+        var endLocation = tomtom.searchBox({
+            collapsible: false,
+            icon: 'icon-end-black',
+            searchOnDragEnd: 'open'
+        }).addTo(map);
+
+        // locationList stores the start and end position
+        var locationsList = [];
+
+        // Update the searchbox widget content when the markers are dragged
+        routeOnMapView.on(routeOnMapView.Events.MarkerDragEnd, function(result) {
+            //if the index is 0, it is the start, else it is the end
+            var searchBox = result.markerIndex === 0 ? startLocation : endLocation;
+            //the searchBox data becomes the result
+            searchBox.setResultData(result.object);
+        });
+
+        function updateRouteStart(pos) {
+            locationsList[0] = pos;
+            routeOnMapView.draw(locationsList);
         }
 
-        function bindEvents() {
-            geolocateControl.on('error', handleError);
-            messageBoxClose.addEventListener('click', handleMessageBoxClose);
+        function updateRouteEnd(pos) {
+            locationsList[1] = pos;
+            routeOnMapView.draw(locationsList);
         }
 
-        function handleMessageBoxClose() {
-            messageBox.setAttribute('hidden', true);
-        }
+        startLocation.on(startLocation.Events.ResultClicked, function(event) {
+            updateRouteStart(event.data.position);
+        });
 
-        function displayErrorMessage(message) {
-            messageBoxContent.textContent = message;
-            messageBox.removeAttribute('hidden');
-        }
+        endLocation.on(endLocation.Events.ResultClicked, function(event) {
+            updateRouteEnd(event.data.position);
+        });
 
-        function handleError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    displayErrorMessage(messages.permissionDenied);
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                case error.TIMEOUT:
-                    displayErrorMessage(messages.notAvailable);
-            }
-        }
+        startLocation.on(startLocation.Events.ClearButtonClicked, function() {
+            updateRouteStart();
+        });
+
+        endLocation.on(endLocation.Events.ClearButtonClicked, function() {
+            updateRouteEnd();
+        });
     </script>
 </body>
 
