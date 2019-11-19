@@ -80,6 +80,12 @@ router.route("/login").post( (req, res) => {
     }
 )
 
+router.route("/logout").get(
+    function(req, res){
+        req.session.user = null;
+    }
+)
+
 async function checkUser(password, hash, res){
     const match = await bcrypt.compare(password, hash);
 
