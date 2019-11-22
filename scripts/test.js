@@ -1,4 +1,7 @@
 module.exports = {
+    consoleLog() {
+        console.log("hwllo");
+    },
     xmlToJson(xml) {
         var obj = {};
 

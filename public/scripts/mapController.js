@@ -84,18 +84,22 @@ function updateRouteEnd(pos) {
 
 startLocation.on(startLocation.Events.ResultClicked, function(event) {
     updateRouteStart(event.data.position);
+    window.start_location = event.data.position;
 });
 
 endLocation.on(endLocation.Events.ResultClicked, function(event) {
     updateRouteEnd(event.data.position);
+    window.end_location = event.data.position;
 });
 
 startLocation.on(startLocation.Events.ClearButtonClicked, function() {
     updateRouteStart();
+    window.startLocation = undefined;
 });
 
 endLocation.on(endLocation.Events.ClearButtonClicked, function() {
     updateRouteEnd();
+    window.endLocation = undefined;
 });
 
 ScooterPoints = [
