@@ -1,14 +1,6 @@
 const scooter_button = document.getElementById('scooter_button');
 
-scooter_button.addEventListener('click', (evt) =>{
-    let url = 'https://api.multicycles.org/v1?access_token=9zrG3cRPdgKwJiOeDh1BmZ9Kly2Ul5hM';
-    
-    const request_headers = new Headers();
-    request_headers.append('Content-Type', 'application/json');
-    request_headers.append('Host', 'api.multicycles.org');
-    request_headers.append('Accept', '*/*');
-    
-    console.log("fetching here");
+scooter_button.addEventListener('click', (evt) =>{    
     fetch('https://api.multicycles.org/v1?access_token=9zrG3cRPdgKwJiOeDh1BmZ9Kly2Ul5hM', {
         method: 'POST',
         headers: {
