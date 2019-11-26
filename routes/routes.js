@@ -10,6 +10,12 @@ router.route("/").get(
     }
 )
 
+router.route("/map").get(
+    (req, res) => {
+        res.render("map");
+    }
+)
+
 router.route("/signUp").get(
     function(req, res){
         console.log("Sign Up - Get");
