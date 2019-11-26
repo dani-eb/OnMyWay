@@ -1,20 +1,29 @@
-const https = require('https')
-const options = {
-    hostname: 'api.multicycles.org',
-    path: '/v1?access_token=PRtuzKsnlYrjrj7wnhCdlz48',
-    method: 'GET'
-}
+const scooter_button = document.getElementById('scooter_button');
 
-const req = https.request(options, res => {
-    console.log(`statusCode: ${res.statusCode}`)
+scooter_button.addEventListener('click', (evt) =>{
+    let url = 'api.multicycles.org/v1?access_token=PRtuzKsnlYrjrj7wnhCdlz48';
+    
+    const request_headers = new Headers();
+    request_headers.append('Content-Type', 'application/json');
 
-    res.on('data', d=> {
-        process.stdout.write(d)
-    })
-})
+    const request_body = {
 
-req.on('error', error => {
-    console.error(error)
-})
+        query:"query ($lat: Float!, $lng: Float!) {\n  vehicles(lat: $lat, lng: $lng) {\n\t\tid\n  }\n}","variables":{"lat":48.856614,"lng":2.352222}
+    };
 
-req.end()
+    const request_settings = {
+        method: 'POST',
+        headers: request_headers,
+        mode: 'no-cors', // change cors if errors
+        body: request_body
+    };
+
+    const request = fetch(url, request_settings).then((response) => {
+        console.log(response);
+    });
+
+});
+
+
+
+
