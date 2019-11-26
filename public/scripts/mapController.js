@@ -5,13 +5,15 @@ tomtom.setProductInfo('OMW', 'V1');
 tomtom.routingKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
 tomtom.searchKey('VQOVbt49nO29ANmuQgvS73U6tOUGecoG');
 
-var ScooterPoints;
 // Creating the map
 var map = tomtom.L.map('map', {
     key: 'VQOVbt49nO29ANmuQgvS73U6tOUGecoG',
     source: 'vector',
     basePath: '/sdk'
 });
+
+//This is an array of the scooters
+var ScooterPoints;
 
 //Zoom in and out with buttons on the top right
 map.zoomControl.setPosition('topright');
@@ -60,26 +62,23 @@ var locationsList = [];
 
 // Update the searchbox widget content when the markers are dragged
 routeOnMapView.on(routeOnMapView.Events.MarkerDragEnd, function(result) {
-    ScooterPoints = [
-        [-33.87, 158.21, 'Sydney'],
-        [-37.81, 146.96, 'Melbourneeeeee'],
-        [-27.46, 155.02, 'Brisbane']
-    ];
-    updateMarkers();
     //if the index is 0, it is the start, else it is the end
     var searchBox = result.markerIndex === 0 ? startLocation : endLocation;
     //the searchBox data becomes the result
     searchBox.setResultData(result.object);
+    updateMarkers();
 });
 
 function updateRouteStart(pos) {
     locationsList[0] = pos;
     routeOnMapView.draw(locationsList);
+    updateMarkers();
 }
 
 function updateRouteEnd(pos) {
     locationsList[1] = pos;
     routeOnMapView.draw(locationsList);
+    updateMarkers();
 }
 
 startLocation.on(startLocation.Events.ResultClicked, function(event) {
@@ -102,35 +101,43 @@ endLocation.on(endLocation.Events.ClearButtonClicked, function() {
     window.endLocation = undefined;
 });
 
-ScooterPoints = [
-    [-33.87, 151.21, 'Sydneyyyyy'],
-    [-37.81, 144.96, 'Melbourne'],
-    [-27.46, 153.02, 'Brisbane']
-];
 updateMarkers();
 
 var markers = tomtom.L.markerClusterGroup();
 
-function updateMarkers() {
-    console.log(ScooterPoints);
-    console.log("in update");
+function getUpdatedScooterPoints(){
+    //Get the scooter points here
+    ScooterPoints = [
+        [1, -33.87, 181.21, 'Sydneyyyyy'],
+        [2, -37.81, 181.96, 'Melbourne'],
+        [3, -27.46, 181.02, 'Brisbane']
+    ];
+    // ScooterPoints = [
+    //     [1, -33.87, 191.21, 'Sydneyyyyy'],
+    //     [2, -37.81, 191.96, 'Melbourne'],
+    //     [3, -27.46, 191.02, 'Brisbane']
+    // ];
+}
+
+async function updateMarkers() {
+    getUpdatedScooterPoints();
     if (markers) {
         console.log("in remove layer");
-        map.removeLayer(markers);
         if (typeof markers !== 'undefined') {
             console.log("in remove markers");
+
             markers.removeLayers();
         }
+        await map.removeLayer(markers);
     }
 
     markers = tomtom.L.markerClusterGroup();
     console.log("in marker creation");
 
     ScooterPoints.forEach(function(point) {
-        console.log("in for each for " + point[2]);
-
-        var title = point[2],
-            marker = tomtom.L.marker(new tomtom.L.LatLng(point[0], point[1]), { title: title });
+        console.log("in for each for " + point[3]);
+        var title = point[3],
+            marker = tomtom.L.marker(new tomtom.L.LatLng(point[1], point[2]), { title: title });
         marker.bindPopup(title);
         markers.addLayer(marker);
     });
