@@ -1,7 +1,7 @@
 html
     head
         title="Home"
-        script(src="./app.js")
+
         link(href="/css/index.css", rel="stylesheet", type="text/css")
     body
         div(class="navigationBox")
@@ -16,15 +16,17 @@ html
                     a(href="/personal")="Personal"
         div(class="image")
             img(src='https://www.rideuta.com/-/media/Images/Rider-Info/How-To-Ride/how_to_ride_trax_vehicle.ashx?h=233&w=350&hash=F9BCD8D09941A3ACF8E7C1D09AAB2E80122B1B05&la=en')  
-        div(class="loginBox")
-            div(class="loginLabel")="Login"
-                label()=error
-            form(method="post" id="loginForm" action="logIn")
-                div()
-                    label()="Email:"
-                    input(type="text" name="email" value=email)
-                div()
-                    label()="Password:"
-                    input(type="password" name="password")
-                button(class="button" type="submit")="Log In"
-                button(class="button" type="submit")="Sign Up"
+        if (!login)
+            div(class="loginBox")
+                div(class="loginLabel")="Login"
+                    label()=error
+                form(method="post" id="loginForm" action="logIn")
+                    div()
+                        label()="Email:"
+                        input(type="text" name="email" value=email)
+                    div()
+                        label()="Password:"
+                        input(type="password" name="password")
+                    button(class="button" type="submit")="Log In"
+                form(method="get" action="signup")
+                    button(class="button" type="submit")="Sign Up"

@@ -5,11 +5,14 @@ const router = express.Router();
 
 router.route("/").get(
     function(req, res){
-        if (req.session.user && req.session.user.isAuthenticated) {
-            res.render("index");
-        } else {
-            res.render("login");
-        }
+        res.render("index", {login:req.session.user?req.session.user.isAuthenticated:false});
+        // if (req.session.user && req.session.user.isAuthenticated) {
+        //     console.log("authed");
+        //     res.render("index");
+        // } else {
+        //     console.log("not authed");
+        //     res.render("index");
+        // }
     }
 )
 
@@ -18,14 +21,14 @@ router.route("/map").get(
         if (req.session.user && req.session.user.isAuthenticated) {
             res.render("map");
         } else {
-            res.render("login")
+            res.render("index")
         }
     }
 )
 
 router.route("/signUp").get(
     function(req, res){
-        console.log("Sign Up - Get");
+        // console.log("Sign Up - Get");
         
         res.render("signUp");
     }
@@ -33,9 +36,9 @@ router.route("/signUp").get(
     
 router.route("/signUp").post(
     function(req, res){
-        console.log("Sign Up - Post");
+        // console.log("Sign Up - Post");
         if(req.body.email && req.body.password && req.body.name){
-            console.log("Sign Up - Post: Inside if statement");
+            // console.log("Sign Up - Post: Inside if statement");
             mongo_controller.makeUser(req.body.name, req.body.email, req.body.password, (success) => {
                 if (success) {
                     req.session.user = {
@@ -67,16 +70,16 @@ router.route("/signUp").post(
     }
 )
 
-router.route("/login").get(
-    function(req, res){
-        console.log("Login - Get");
+// router.route("/login").get(
+//     function(req, res){
+//         // console.log("Login - Get");
 
-        res.render("login");
-    }
-)
+//         res.render("login");
+//     }
+// )
 
 router.route("/login").post( (req, res) => {
-        console.log("Login - Post");
+        // console.log("Login - Post");
         if(req.body.email && req.body.password){
             mongo_controller.login(req.body.email, req.body.password, (success, model) => {
                 console.log("Logged in successfully? "+success);
@@ -84,10 +87,10 @@ router.route("/login").post( (req, res) => {
                     req.session.user = {
                         isAuthenticated:true,
                         username: req.body.email
-                    }
+                    };
                     res.redirect("/");
                 } else {
-                    res.render("login", model);
+                    res.render("index", model);
                 }
             });
         }
