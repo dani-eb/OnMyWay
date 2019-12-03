@@ -12,7 +12,7 @@ const sortTableData = (a, b) => {
 }
 
 scooter_button.addEventListener('click', (evt) =>{    
-    var startingPosition = getStartLoaction();
+    var startingPosition = getStartLocation();
     fetch('https://api.multicycles.org/v1?access_token=9zrG3cRPdgKwJiOeDh1BmZ9Kly2Ul5hM', {
         method: 'POST',
         headers: {
