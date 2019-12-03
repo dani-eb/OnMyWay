@@ -60,6 +60,9 @@ scooter_button.addEventListener('click', (evt) =>{
             TableData.push({distance: calculateDistanceBetweenCoordinates(startingPosition.lat, startingPosition.lng, v.lat, v.lng), provider: v.provider.name});
             count++;
         });
+        setScooterPoints(ScooterArray);
+        console.log("here's the array");
+
         TableData.sort(sortTableData);
         let scooter_table_html = `<tbody><tr>\n\t<th>Distance</th>\n\t<th>Provider</th>\n</tr>\n`;
         // scooter_table.innerHTML = `<tbody><tr>\n\t<th>Distance</th>\n\t<th>Provider</th>\n</tr>\n`;
@@ -70,7 +73,6 @@ scooter_button.addEventListener('click', (evt) =>{
         console.log(scooter_table_html);
         scooter_table.innerHTML = scooter_table_html;
         console.log(ScooterArray);
-
 
     })
 
