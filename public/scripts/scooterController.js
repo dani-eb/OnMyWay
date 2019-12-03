@@ -2,7 +2,7 @@ const scooter_button = document.getElementById('scooter_button');
 
 
 scooter_button.addEventListener('click', (evt) =>{    
-    var startingPosition = getStartLoction();
+    var startingPosition = getStartLoaction();
     fetch('https://api.multicycles.org/v1?access_token=9zrG3cRPdgKwJiOeDh1BmZ9Kly2Ul5hM', {
         method: 'POST',
         headers: {
@@ -49,6 +49,7 @@ scooter_button.addEventListener('click', (evt) =>{
         });
 
         console.log(ScooterArray);
+
 
     })
 
