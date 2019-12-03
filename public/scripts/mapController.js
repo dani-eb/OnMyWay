@@ -109,6 +109,7 @@ var markers = tomtom.L.markerClusterGroup();
 
 //testing stuff
 var i = 1;
+
 function getUpdatedScooterPoints() {
     //gimme the points
     if(i === 1){
