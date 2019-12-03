@@ -8,8 +8,13 @@ html
         script(type='text/javascript', src='sdk/tomtom.min.js', defer)
         script(type='text/javascript', src='../scripts/mapController.js', defer)
         script(type='text/javascript', src='../scripts/scooterController.js', defer)
+        script(type='text/javascript', src='../scripts/distanceCalculator.js', defer)
     body(class='use-all-space')
         div(id='info_panel')
-            p boop boop
+            table(id='scooter_table')
+                tr
+                    th Provider
+                    th Distance
+                
         div(id='map', class='use-all-space')
         div(id='scooter_button')

@@ -3,11 +3,26 @@ html {
 }
 
 #info_panel {
-    width: 100px;
-    height: 300px;
+    width: 300px;
+    height: 400px;
     position: absolute;
     bottom: 0;
     left: 0;    
-    z-index: 100000000000;
+    overflow-y: scroll;
     background-color: #ffffff;
+    z-index: 100000;
+}
+
+#scooter_table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#scooter_table th, #scooter_table td {
+    text-align: left;
+    padding: 8px;
+}
+
+#scooter_table tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
