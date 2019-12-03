@@ -61,6 +61,10 @@ var endLocation = tomtom.searchBox({
 // locationList stores the start and end position
 var locationsList = [];
 
+function getStartLoction(){
+    return locationsList[0];
+}
+
 // Update the searchbox widget content when the markers are dragged
 routeOnMapView.on(routeOnMapView.Events.MarkerDragEnd, function (result) {
     //if the index is 0, it is the start, else it is the end
