@@ -61,7 +61,7 @@ var endLocation = tomtom.searchBox({
 // locationList stores the start and end position
 var locationsList = [];
 
-function getStartLoction(){
+function getStartLocation(){
     return locationsList[0];
 }
 
