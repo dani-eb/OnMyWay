@@ -1,18 +1,25 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const mongo_controller = require("../scripts/MongoController");
 
 const router = express.Router();
 
 router.route("/").get(
     function(req, res){
-        res.render("index");
+        if (req.session.user && req.session.user.isAuthenticated) {
+            res.render("index");
+        } else {
+            res.render("login");
+        }
     }
 )
 
 router.route("/map").get(
     (req, res) => {
-        res.render("map");
+        if (req.session.user && req.session.user.isAuthenticated) {
+            res.render("map");
+        } else {
+            res.render("login")
+        }
     }
 )
 
@@ -72,6 +79,7 @@ router.route("/login").post( (req, res) => {
         console.log("Login - Post");
         if(req.body.email && req.body.password){
             mongo_controller.login(req.body.email, req.body.password, (success, model) => {
+                console.log("Logged in successfully? "+success);
                 if (success) {
                     req.session.user = {
                         isAuthenticated:true,
