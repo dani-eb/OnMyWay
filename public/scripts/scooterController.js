@@ -33,7 +33,23 @@ scooter_button.addEventListener('click', (evt) =>{
     }).then(responseAsJson => {
         console.log(responseAsJson.data)
         var scooter_info = document.getElementById('scooter_info')
-        scooter_info
+        // console.log(responseAsJson.data.vehicles.size);
+        // var obj = JSON.parse(responseAsJson.data.vehicles);
+        // console.log(obj)
+        // for(var obj in responseAsJson.data.vehicles){
+        //     console.log(obj)
+        // }
+        var ScooterArray = [];
+        var count = 0;
+        responseAsJson.data.vehicles.forEach((v)=>{
+            // console.log(v);
+            ScooterArray[count] = [v.id, v.lat, v.lng, v.provider.name];
+
+            count++;
+        });
+
+        console.log(ScooterArray);
+
     })
 
 });
