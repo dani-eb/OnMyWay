@@ -1,8 +1,19 @@
 html
     head
         title="Sign Up"
+        script(src="./app.js")
         link()
     body
+        div(class="navigationBox")
+            ul(class="nav")
+                li
+                    h1 OnMyWay
+                li
+                    a(href="/ridesNow")="Rides Now"
+                li
+                    a(href="/uta")="UTA"
+                li
+                    a(href="/personal")="Personal"
         div()="Sign Up"
             label()=error
         form(method="post" id="loginForm" action="signUp")

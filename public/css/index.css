@@ -36,12 +36,20 @@ a:hover {
     margin: 10px 10px 10px 0px;
 }
 .loginLabel{
-    padding-top: 20px;
+    padding-top: 16px;
     align-self: center;
+    font-size: 25px;
+    display: flex;
+    flex-wrap: wrap;
 }
 button{
     margin-top: 20px;
     align-self: center;
     margin-right: 10px;
+    margin-left: 10px;
+}
+body{
+    display: flex;
+    flex-wrap: wrap;
 }
 
