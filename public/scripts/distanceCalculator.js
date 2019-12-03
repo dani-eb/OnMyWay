@@ -1,6 +1,9 @@
 
 
 const earthRadius = 6371000 // radius of the earth
+
+Number.prototype.toRadians = function() { return this * Math.PI / 180; };
+
 const calculateDistanceBetweenCoordinates = (startLat, startLon, endLat, endLon) => {
     var startLatRadians = startLat.toRadians(); // start lat
     var endLatRadians = endLat.toRadians(); // end

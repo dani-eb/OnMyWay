@@ -23,6 +23,8 @@ html {
     padding: 8px;
 }
 
-#scooter_table tr:nth-child(even) {
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+/* #scooter_table tr:nth-child(even) {
     background-color: #f2f2f2;
-}
+} */

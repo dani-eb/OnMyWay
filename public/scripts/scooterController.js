@@ -1,5 +1,15 @@
 const scooter_button = document.getElementById('scooter_button');
+const scooter_table = document.getElementById('scooter_table');
 
+const sortTableData = (a, b) => {
+    let comparison = 0;
+    if (a.distance > b.distance) {
+        comparison = 1;
+    } else if (a.distance < b.distance) {
+        comparison = -1;
+    }
+    return comparison;
+}
 
 scooter_button.addEventListener('click', (evt) =>{    
     var startingPosition = getStartLoction();
@@ -39,21 +49,32 @@ scooter_button.addEventListener('click', (evt) =>{
         // for(var obj in responseAsJson.data.vehicles){
         //     console.log(obj)
         // }
+
         var ScooterArray = [];
+        var TableData = [];
         var count = 0;
+        responseAsJson.data.vehicles.sort();
         responseAsJson.data.vehicles.forEach((v)=>{
             // console.log(v);
             ScooterArray[count] = [v.id, v.lat, v.lng, v.provider.name];
-
+            TableData.push({distance: calculateDistanceBetweenCoordinates(startingPosition.lat, startingPosition.lng, v.lat, v.lng), provider: v.provider.name});
             count++;
         });
-
+        TableData.sort(sortTableData);
+        let scooter_table_html = `<tbody><tr>\n\t<th>Distance</th>\n\t<th>Provider</th>\n</tr>\n`;
+        // scooter_table.innerHTML = `<tbody><tr>\n\t<th>Distance</th>\n\t<th>Provider</th>\n</tr>\n`;
+        TableData.forEach((d) => {
+            scooter_table_html += `<tr>\n\t<th>${(d.distance*3.28084).toFixed(0)} feet</th>\n\t<th>${d.provider}</th>\n</tr>\n`;
+        })
+        scooter_table_html += "</tbody>";
+        console.log(scooter_table_html);
+        scooter_table.innerHTML = scooter_table_html;
         console.log(ScooterArray);
 
     })
 
 });
-
+// scooter_table.innerHTML += `<tr>\n\t<th>${calculateDistanceBetweenCoordinates(startingPosition.lat, startingPosition.lng, v.lat, v.lng)}</th>\n\t<th>${v.provider.name}</th>\n<tr>\n`;
 // scooter_button.click();
 
 
