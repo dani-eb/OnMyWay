@@ -3,12 +3,45 @@
     display: flex;
     flex-wrap: wrap;
     align-content: center;
+    align-items: center;
     overflow: hidden;
     position: fixed;
     top: 0;
     width: 100%;
+    color: white;
 }
 .nav li{
     padding: 10px 10px 10px 10px;
     border: 2px solid white;
 }
+img{
+    width: 100%;
+}
+a:link {
+    color: white;
+}
+a:visited {
+    color: white;
+}
+a:hover {
+    color: rgb(18, 18, 194);
+}
+.loginBox{
+    display: flex;
+    flex-wrap: wrap;
+    border: 2px solid darkgray;
+    width: 175px;
+    height: 250px;
+    padding-left: 10px;
+    margin: 10px 10px 10px 0px;
+}
+.loginLabel{
+    padding-top: 20px;
+    align-self: center;
+}
+button{
+    margin-top: 20px;
+    align-self: center;
+    margin-right: 10px;
+}
+
