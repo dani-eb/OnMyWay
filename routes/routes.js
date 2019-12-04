@@ -112,6 +112,8 @@ router.route("/login").post( (req, res) => {
 router.route("/logout").get(
     function(req, res){
         req.session.user = null;
+
+        res.redirect("/");
     }
 )
 

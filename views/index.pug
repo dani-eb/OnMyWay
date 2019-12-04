@@ -12,21 +12,25 @@ html
                     a(href="/ridesNow")="Rides Now"
                 li
                     a(href="/uta")="UTA"
+                if login
+                    li
+                        a(href="/logout")="Logout"
         div(class="image")
-            img(src='https://aestheticmedicaltraining.com/wp-content/uploads/2019/01/saltlakecity1.jpg')  
-        div(class="loginBox")
-            div(class="loginLabel")="Login"
-                label()=error
-            form(method="post" id="loginForm" action="logIn")
-                div()
-                    label()="Email:"
-                    input(type="text" name="email" value=email)
-                div()
-                    label()="Password:"
-                    input(type="password" name="password")
-                button(class="button" type="submit")="Log In"
-            form(method="post" id="signUpForm" action="signUp")
-                button(class="button" type=)="Sign Up"
+            img(src='https://aestheticmedicaltraining.com/wp-content/uploads/2019/01/saltlakecity1.jpg')
+        if  !login
+            div(class="loginBox")
+                div(class="loginLabel")="Login"
+                    label()=error
+                form(method="post" id="loginForm" action="logIn")
+                    div()
+                        label()="Email:"
+                        input(type="text" name="email" value=email)
+                    div()
+                        label()="Password:"
+                        input(type="password" name="password")
+                    button(class="button" type="submit")="Log In"
+                h1
+                    a(href="/signUp")="Sign Up"
         div(class="info")
             h1 Wanting to get around a City?
             h5 We can Help!
