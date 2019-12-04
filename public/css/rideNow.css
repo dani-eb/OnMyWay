@@ -36,7 +36,13 @@ a:hover {
 }
 
 .selectingWays a:visited{
+    color: rgb(68, 68, 68);
+}
+.utaLink a:link{
     color: black;
+}
+.utaLink a:visited{
+    color: rgb(68, 68, 68);
 }
 
 li{
