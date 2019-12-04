@@ -1,3 +1,8 @@
+html{
+    background-color: floralwhite;
+}
+.navigationBox{
+}
 .nav {
     list-style-type: none;
     display: flex;
@@ -11,6 +16,7 @@
     color: white;
 }
 .nav li{
+    background-color: #9FD4F3;
     padding: 10px 10px 10px 10px;
     border: 2px solid white;
 }
@@ -52,4 +58,3 @@ body{
     display: flex;
     flex-wrap: wrap;
 }
-

@@ -16,6 +16,18 @@ router.route("/map").get(
     }
 )
 
+router.route("/ridesNow").get(
+    function (req, res){
+        res.render("ridesNow");
+    }
+)
+
+router.route("/uta").get(
+    function (req, res){
+        res.render("utaPage");
+    }
+)
+
 router.route("/signUp").get(
     function(req, res){
         console.log("Sign Up - Get");
@@ -96,7 +108,7 @@ async function checkUser(password, hash, res){
     const match = await bcrypt.compare(password, hash);
 
     if(match){
-       res.redirect("/");
+        res.redirect("/");
     } else {
         let model = {
             email: req.body.email,

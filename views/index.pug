@@ -1,21 +1,20 @@
 html
     head
         title="Home"
-        script(src="./app.js")
+        //- script(src="./app.js")
         link(href="/css/index.css", rel="stylesheet", type="text/css")
     body
         div(class="navigationBox")
             ul(class="nav")
                 li
-                    h1 OnMyWay
+                    a(href="/")
+                        h1 OnMyWay
                 li
                     a(href="/ridesNow")="Rides Now"
                 li
                     a(href="/uta")="UTA"
-                li
-                    a(href="/personal")="Personal"
         div(class="image")
-            img(src='https://www.rideuta.com/-/media/Images/Rider-Info/How-To-Ride/how_to_ride_trax_vehicle.ashx?h=233&w=350&hash=F9BCD8D09941A3ACF8E7C1D09AAB2E80122B1B05&la=en')  
+            img(src='https://aestheticmedicaltraining.com/wp-content/uploads/2019/01/saltlakecity1.jpg')  
         div(class="loginBox")
             div(class="loginLabel")="Login"
                 label()=error
@@ -27,7 +26,14 @@ html
                     label()="Password:"
                     input(type="password" name="password")
                 button(class="button" type="submit")="Log In"
-                button(class="button" type="submit")="Sign Up"
+            form(method="post" id="signUpForm" action="signUp")
+                button(class="button" type=)="Sign Up"
         div(class="info")
-            h1 Traveling in Salt Lake City?
-            h5 If you want to see how much it would cost to drive yourself, take a scooter, or 
+            h1 Wanting to get around a City?
+            h5 We can Help!
+            p Find both kinds of scooter on our map 
+            p and information on the UTA system in Salt Lake City! 
+script.
+    function signUp(){
+        location.href = '/signUp';
+    }

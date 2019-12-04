@@ -1,0 +1,49 @@
+html{
+    background-color: floralwhite;
+}
+.nav {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    color: white;
+}
+.nav li{
+    background-color: #9FD4F3;
+    padding: 10px 10px 10px 10px;
+    border: 2px solid white;
+}
+img{
+    width: 100%;
+}
+a:link {
+    color: white;
+}
+a:visited {
+    color: white;
+}
+a:hover {
+    color: rgb(18, 18, 194);
+}
+
+.selectinWays a:link{
+    color: black;
+}
+
+.selectinWays a:visited{
+    color: black;
+}
+
+li{
+    list-style-type: none;
+    padding: 10px 10px 10px 10px;
+    color: black;
+    font-size: large;
+    align-content: center;
+    align-items: center;
+}
