@@ -11,7 +11,7 @@ const sortTableData = (a, b) => {
     return comparison;
 }
 
-scooter_button.addEventListener('click', (evt) =>{    
+scooter_button.addEventListener('click', (evt) => {
     var startingPosition = getStartLocation();
     fetch('https://api.multicycles.org/v1?access_token=9zrG3cRPdgKwJiOeDh1BmZ9Kly2Ul5hM', {
         method: 'POST',
@@ -32,17 +32,17 @@ scooter_button.addEventListener('click', (evt) =>{
             }`,
             variables: {
                 lat: startingPosition.lat,
-		        lng: startingPosition.lng,
-		        typeVehicles: [
-    		        "SCOOTER"
-		        ]
+                lng: startingPosition.lng,
+                typeVehicles: [
+                    "SCOOTER"
+                ]
             }
         })
     }).then(response => {
         return response.json()
     }).then(responseAsJson => {
         console.log(responseAsJson.data)
-        var scooter_info = document.getElementById('scooter_info')
+        // var scooter_info = document.getElementById('scooter_info')
         // console.log(responseAsJson.data.vehicles.size);
         // var obj = JSON.parse(responseAsJson.data.vehicles);
         // console.log(obj)
@@ -54,23 +54,28 @@ scooter_button.addEventListener('click', (evt) =>{
         var TableData = [];
         var count = 0;
         responseAsJson.data.vehicles.sort();
-        responseAsJson.data.vehicles.forEach((v)=>{
+
+        responseAsJson.data.vehicles.forEach((v) => {
             // console.log(v);
-            ScooterArray[count] = [v.id, v.lat, v.lng, v.provider.name];
-            TableData.push({distance: calculateDistanceBetweenCoordinates(startingPosition.lat, startingPosition.lng, v.lat, v.lng), provider: v.provider.name});
+            var description = v.provider.name;
+            console.log(description);
+            ScooterArray[count] = [v.id, v.lat, v.lng, description];
+            TableData.push({ distance: calculateDistanceBetweenCoordinates(startingPosition.lat, startingPosition.lng, v.lat, v.lng), provider: v.provider.name });
             count++;
         });
+        setScooterPoints(ScooterArray);
+        // console.log("here's the array");
+
         TableData.sort(sortTableData);
         let scooter_table_html = `<tbody><tr>\n\t<th>Distance</th>\n\t<th>Provider</th>\n</tr>\n`;
         // scooter_table.innerHTML = `<tbody><tr>\n\t<th>Distance</th>\n\t<th>Provider</th>\n</tr>\n`;
         TableData.forEach((d) => {
-            scooter_table_html += `<tr>\n\t<th>${(d.distance*3.28084).toFixed(0)} feet</th>\n\t<th>${d.provider}</th>\n</tr>\n`;
+            scooter_table_html += `<tr>\n\t<th>${(d.distance * 3.28084).toFixed(0)} feet</th>\n\t<th>${d.provider}</th>\n</tr>\n`;
         })
         scooter_table_html += "</tbody>";
-        console.log(scooter_table_html);
+        // console.log(scooter_table_html);
         scooter_table.innerHTML = scooter_table_html;
-        console.log(ScooterArray);
-
+        // console.log(ScooterArray);
 
     })
 

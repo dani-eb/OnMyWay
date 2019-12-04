@@ -27,15 +27,15 @@ exports.User = mongoose.model("User", UserSchema);
 exports.makeUser = (name, email, password, callback) => {
     this.User.find({}, (err, user) => {
         if (err) {
-            console.log(err);
+            // console.log(err);
             // success is false
             return callback(false);
         }
         if (user) {
-            console.log("2");
+            // console.log("2");
             passwordController.generateHash(password, (err, hash) => {
                 if (err) {
-                    console.log(err);
+                    // console.log(err);
                     // success is false
                     return callback(false);
                 }
@@ -52,7 +52,7 @@ exports.makeUser = (name, email, password, callback) => {
                     // success is true
                     return callback(true);
                 } else {
-                    console.log("no user has been generated, could not save user");
+                    // console.log("no user has been generated, could not save user");
                     // success is false
                     return callback(false);
                 }
@@ -63,27 +63,35 @@ exports.makeUser = (name, email, password, callback) => {
 
 exports.login = (email, password, callback) => {
     let incorrectModel = {
-        email: req.body.email,
+        email: email,
         error: "Password or email was incorrect"
     }
     this.User.find({email: email}, (err, user) => {
         if(err){
             return callback(false, incorrectModel);
-            return;
         }
-        passwordController.checkPassword(password, user[0].password, (err, success) => {
-            if (err) {
-                console.log(err);
-                // success is false
-                return callback(false);
-            }
-            if (success) {
-                // success is true
-                return callback(true);
-            } else {
-                // success is false
-                return callback(false, incorrectModel);
-            }
-        });
+        // console.log("is there a user?")
+        if (user[0]) {
+            // console.log("yes");
+            passwordController.checkPassword(password, user[0].password, (success, err) => {
+                if (err) {
+                    // console.log(err);
+                    // success is false
+                    return callback(false);
+                }
+                console.log("no error on login");
+                if (success) {
+                    // console.log("made it!");
+                    // success is true
+                    return callback(true);
+                } else {
+                    // success is false
+                    return callback(false, incorrectModel);
+                }
+            });
+        } else {
+            // console.log("no")
+            return callback(false, incorrectModel);
+        }
     });
 }

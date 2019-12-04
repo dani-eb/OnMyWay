@@ -42,7 +42,7 @@ module.exports = {
             if (hash) {
                 // success is true
                 // custom message
-                return callback(true, "Password was correct");
+                return callback(true, undefined);
             } else {
                 // success is false
                 // custom message

@@ -111,33 +111,15 @@ updateMarkers();
 
 var markers = tomtom.L.markerClusterGroup();
 
-//testing stuff
-var i = 1;
-
-function getUpdatedScooterPoints() {
-    //gimme the points
-    if(i === 1){
-        ScooterPoints = [
-            [1, -33.87, 161.21, 'Sydneyyyyy'],
-            [2, -37.81, 161.96, 'Melbourne'],
-            [3, -27.46, 161.02, 'Brisbane']
-        ];
-    }else if(i === 2){
-        ScooterPoints = [
-            [1, -33.87, 181.21, 'Sydneyyyyy'],
-            [2, -37.81, 181.96, 'Melbourne'],
-            [3, -27.46, 181.02, 'Brisbane']
-        ];
-    }else{
-        ScooterPoints = [];
-    }
+function setScooterPoints(points){
+    ScooterPoints = points;
+    updateMarkers();
 }
 
 function createScooterMarkers() {
     ScooterMarkerArray = new Array();
     if(typeof ScooterPoints !== 'undefined' && ScooterPoints.length){
         ScooterPoints.forEach(function (point) {
-            console.log("in for each for " + point[3]);
             var title = point[3],
                 marker = tomtom.L.marker(new tomtom.L.LatLng(point[1], point[2]), { title: title });
             marker.bindPopup(title);
@@ -147,10 +129,8 @@ function createScooterMarkers() {
 }
 
 async function updateMarkers() {
-    getUpdatedScooterPoints();
     createScooterMarkers();
     if (markers) {
-        console.log("in remove layer");
         if (typeof markers !== 'undefined' && markers.length) {
             //check if updated and remove
             ScooterMarkerArray.forEach(function (marker) {
@@ -160,8 +140,6 @@ async function updateMarkers() {
         }
         await map.removeLayer(markers);
     }
-    //testing var
-    i = i + 1;
     markers = tomtom.L.markerClusterGroup();
     ScooterMarkerArray.forEach(function(marker) {
         markers.addLayer(marker);
