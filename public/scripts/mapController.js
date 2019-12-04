@@ -114,14 +114,12 @@ var markers = tomtom.L.markerClusterGroup();
 function setScooterPoints(points){
     ScooterPoints = points;
     updateMarkers();
-    console.log("updating markers");
 }
 
 function createScooterMarkers() {
     ScooterMarkerArray = new Array();
     if(typeof ScooterPoints !== 'undefined' && ScooterPoints.length){
         ScooterPoints.forEach(function (point) {
-            console.log("in for each for " + point[3]);
             var title = point[3],
                 marker = tomtom.L.marker(new tomtom.L.LatLng(point[1], point[2]), { title: title });
             marker.bindPopup(title);
@@ -133,7 +131,6 @@ function createScooterMarkers() {
 async function updateMarkers() {
     createScooterMarkers();
     if (markers) {
-        console.log("in remove layer");
         if (typeof markers !== 'undefined' && markers.length) {
             //check if updated and remove
             ScooterMarkerArray.forEach(function (marker) {

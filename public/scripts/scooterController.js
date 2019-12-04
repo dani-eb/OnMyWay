@@ -64,7 +64,7 @@ scooter_button.addEventListener('click', (evt) => {
             count++;
         });
         setScooterPoints(ScooterArray);
-        console.log("here's the array");
+        // console.log("here's the array");
 
         TableData.sort(sortTableData);
         let scooter_table_html = `<tbody><tr>\n\t<th>Distance</th>\n\t<th>Provider</th>\n</tr>\n`;
@@ -73,9 +73,9 @@ scooter_button.addEventListener('click', (evt) => {
             scooter_table_html += `<tr>\n\t<th>${(d.distance * 3.28084).toFixed(0)} feet</th>\n\t<th>${d.provider}</th>\n</tr>\n`;
         })
         scooter_table_html += "</tbody>";
-        console.log(scooter_table_html);
+        // console.log(scooter_table_html);
         scooter_table.innerHTML = scooter_table_html;
-        console.log(ScooterArray);
+        // console.log(ScooterArray);
 
     })
 
