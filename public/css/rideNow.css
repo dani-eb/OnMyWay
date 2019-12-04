@@ -31,11 +31,11 @@ a:hover {
     color: rgb(18, 18, 194);
 }
 
-.selectinWays a:link{
+.selectingWays a:link{
     color: black;
 }
 
-.selectinWays a:visited{
+.selectingWays a:visited{
     color: black;
 }
 

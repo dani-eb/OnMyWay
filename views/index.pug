@@ -20,7 +20,7 @@ html
         if  !login
             div(class="loginBox")
                 div(class="loginLabel")="Login"
-                    label()=error
+                    label(class="error")=error
                 form(method="post" id="loginForm" action="logIn")
                     div()
                         label()="Email:"
@@ -30,13 +30,9 @@ html
                         input(type="password" name="password")
                     button(class="button" type="submit")="Log In"
                 h1
-                    a(href="/signUp")="Sign Up"
+                    a(id="signUpLink" href="/signUp")="Sign Up"
         div(class="info")
             h1 Wanting to get around a City?
             h5 We can Help!
             p Find both kinds of scooter on our map 
             p and information on the UTA system in Salt Lake City! 
-script.
-    function signUp(){
-        location.href = '/signUp';
-    }

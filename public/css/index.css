@@ -37,7 +37,7 @@ a:hover {
     flex-wrap: wrap;
     border: 2px solid darkgray;
     width: 175px;
-    height: 250px;
+    /* height: 250px; */
     padding-left: 10px;
     margin: 10px 10px 10px 0px;
 }
@@ -57,4 +57,14 @@ button{
 body{
     display: flex;
     flex-wrap: wrap;
+}
+
+#signUpLink{
+    padding: 10px 10px 10px 10px;
+    color: black;
+}
+
+#error{
+    color:red;
+    font-size: xx-small;
 }
