@@ -33,13 +33,16 @@ module.exports = {
         });
     },
     checkPassword(password, hash, callback) {
-        bcrypt.compare(password, hash, (err, hash) => {
+        console.log("Hash 1 " + hash);
+        bcrypt.compare(password, hash, (err, hash1) => {
+            console.log("Hash 2 " + hash1);
+            console.log("err " + err);
             if (err) {
                 // success is false
                 // message is err
                 return callback(false, err);
             }
-            if (hash) {
+            if (hash1) {
                 // success is true
                 // custom message
                 return callback(true, undefined);
