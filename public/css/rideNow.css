@@ -33,16 +33,20 @@ a:hover {
 
 .selectingWays a:link{
     color: black;
+    font-size: 25px;
 }
 
 .selectingWays a:visited{
     color: rgb(68, 68, 68);
+    font-size: 25px;
 }
 .utaLink a:link{
     color: black;
+    font-size: 25px;
 }
 .utaLink a:visited{
     color: rgb(68, 68, 68);
+    font-size: 25px;
 }
 
 li{
@@ -52,4 +56,10 @@ li{
     font-size: large;
     align-content: center;
     align-items: center;
+}
+#uta{
+    padding: 10px 10px 10px 10px;
+    color: black;
+    font-size: 25px;
+    margin-top: 20px;
 }
