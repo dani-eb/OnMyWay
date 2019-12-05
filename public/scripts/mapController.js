@@ -142,22 +142,24 @@ function createScooterMarkers() {
 
 async function updateMarkers() {
     createScooterMarkers();
-    if (markers) {
-        if (typeof markers !== 'undefined' && markers.length) {
-            //check if updated and remove
-            // ScooterMarkerArray.forEach(function (marker) {
-            //     marker.update();
-            // });
-            markers.removeLayers();
-        }
-        
-        console.log("creating markers");
-        await map.removeLayer(markers);
-    }
+
+    if (markers != undefined) {
+        map.removeLayer(markers);
+    };
     markers = tomtom.L.markerClusterGroup();
+
     ScooterMarkerArray.forEach(function(marker) {
         markers.addLayer(marker);
     });
+
+    map.removeLayer(markers);
+
+    markers = tomtom.L.markerClusterGroup();
+
+    ScooterMarkerArray.forEach(function(marker) {
+        markers.addLayer(marker);
+    });
+    
 
     map.addLayer(markers);
 };
