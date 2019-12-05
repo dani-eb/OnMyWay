@@ -12,8 +12,8 @@ html
     body(class='use-all-space')
         div(id='info_panel')
             button(id='scooter_button')="Find Scooters"
-            span
-                a(id="backHome" href="/")="Back Home"
+            form(method="get" action="/")
+                button(type="submit" value="Back Home")="Back Home"
             table(id='scooter_table')
         div(id='map', class='use-all-space')
         div(id='scooter_button')

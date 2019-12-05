@@ -67,6 +67,7 @@ exports.login = (email, password, callback) => {
         error: "Password or email was incorrect"
     }
     this.User.find({email: email}, (err, user) => {
+        console.log(user[0]);
         if(err){
             return callback(false, incorrectModel);
         }
@@ -74,6 +75,8 @@ exports.login = (email, password, callback) => {
         if (user[0]) {
             // console.log("yes");
             passwordController.checkPassword(password, user[0].password, (success, err) => {
+                console.log("PAssword " + password);
+                console.log(success);
                 if (err) {
                     // console.log(err);
                     // success is false
