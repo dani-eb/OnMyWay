@@ -71,10 +71,22 @@ routeOnMapView.on(routeOnMapView.Events.MarkerDragEnd, function (result) {
     var searchBox = result.markerIndex === 0 ? startLocation : endLocation;
     //the searchBox data becomes the result
     searchBox.setResultData(result.object);
+    if(result.markerIndex === 0){
+        console.log(result);
+        //this is asdkfljf
+        var position = '{"lat":';
+        position = position + result.object.position.split(",")[0].trim();
+        position = position + ', "lon":';
+        position = position + result.object.position.split(",")[1].trim();
+        position = position + '}';
+        updateRouteStart(JSON.parse(position));
+    }
+
     updateMarkers();
 });
 
 function updateRouteStart(pos) {
+    console.log(pos);
     locationsList[0] = pos;
     routeOnMapView.draw(locationsList);
     updateMarkers();
@@ -121,7 +133,7 @@ function createScooterMarkers() {
     if(typeof ScooterPoints !== 'undefined' && ScooterPoints.length){
         ScooterPoints.forEach(function (point) {
             var title = point[3],
-                marker = tomtom.L.marker(new tomtom.L.LatLng(point[1], point[2]), { title: title });
+            marker = tomtom.L.marker(new tomtom.L.LatLng(point[1], point[2]), { title: title });
             marker.bindPopup(title);
             ScooterMarkerArray.push(marker);
         });
@@ -133,11 +145,13 @@ async function updateMarkers() {
     if (markers) {
         if (typeof markers !== 'undefined' && markers.length) {
             //check if updated and remove
-            ScooterMarkerArray.forEach(function (marker) {
-                marker.update();
-            });
+            // ScooterMarkerArray.forEach(function (marker) {
+            //     marker.update();
+            // });
             markers.removeLayers();
         }
+        
+        console.log("creating markers");
         await map.removeLayer(markers);
     }
     markers = tomtom.L.markerClusterGroup();
