@@ -1,7 +1,7 @@
 html
     head
         title="Sign Up"
-        link(href="/css/index.css", rel="stylesheet", type="text/css")
+        link(href="/css/signupStyle.css", rel="stylesheet", type="text/css")
     body
         div(class="navigationBox")
             ul(class="nav")
@@ -12,17 +12,17 @@ html
                     a(href="/ridesNow")="Rides Now"
                 li
                     a(href="/uta")="UTA"
-        div()="Sign Up"
+        div(class="pageTitle")="Sign Up"
             label()=error
         div(class="loginBox")
             form(method="post" id="loginForm" action="signUp")
                 div()
-                    label()="Name"
+                    label()="Name: "
                     input(type="text" name="name" value=name)
                 div()
-                    label()="Email"
+                    label()="Email: "
                     input(type="text" name="email" value=email)
                 div()
-                    label()="Password"
+                    label()="Password: "
                     input(type="password" name="password")
                 button(class="button" type="submit")="Sign Up"
